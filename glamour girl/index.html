@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glamour Girl | Bags & Footwear</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS RESET & VARIABLES --- */
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-white: #ffffff;
+            --secondary-gray: #f5f5f5;
+            --border-color: #e5e5e5;
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --whatsapp-green: #25D366;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--primary-white);
+            color: var(--primary-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; cursor: pointer; transition: color 0.3s ease; }
+        button { cursor: pointer; font-family: inherit; border: none; outline: none; background: none; }
+        ul { list-style: none; }
+        img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- GLOBAL LAYOUT --- */
+        .container { max-width: 1440px; margin: 0 auto; padding: 0 3rem; }
+        
+        /* Sections / Views Logic */
+        .view-section { display: none; animation: fadeIn 0.5s ease; flex: 1; }
+        .view-section.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- HEADER --- */
+        header {
+            position: sticky; top: 0; z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.98);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        nav {
+            max-width: 1440px; margin: 0 auto; padding: 1.5rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .nav-left { display: flex; gap: 2rem; flex: 1; }
+        .logo {
+            font-family: var(--font-heading); font-size: 2.2rem; letter-spacing: 3px;
+            font-weight: 400; text-transform: uppercase; text-align: center; flex: 1;
+            cursor: pointer;
+        }
+        .nav-right { display: flex; gap: 1.5rem; flex: 1; justify-content: flex-end; align-items: center; }
+        
+        .nav-link { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+        .cart-icon { font-size: 0.9rem; font-weight: 600; }
+
+        /* --- HERO --- */
+        .hero { height: 85vh; position: relative; overflow: hidden; background-color: #f0f0f0; }
+        .hero-content {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            text-align: center; color: white; width: 100%; max-width: 800px; padding: 0 20px;
+        }
+        .hero-title { font-family: var(--font-heading); font-size: 4rem; font-weight: 400; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .hero-subtitle { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2.5rem; font-weight: 500; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        
+        .btn-primary {
+            background: white; color: black; padding: 16px 45px;
+            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; font-weight: 600;
+            display: inline-block; transition: 0.3s;
+        }
+        .btn-primary:hover { background: var(--primary-black); color: white; }
+
+        /* --- CATEGORIES --- */
+        .categories { padding: 5rem 2rem; text-align: center; }
+        .cat-container { display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; }
+        .cat-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .cat-circle {
+            width: 160px; height: 160px; border-radius: 50%; overflow: hidden; margin-bottom: 1.5rem;
+            transition: transform 0.4s ease; border: 1px solid transparent;
+        }
+        .cat-item:hover .cat-circle { transform: scale(1.05); border-color: var(--primary-black); }
+        .cat-label { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px; }
+
+        /* --- PRODUCTS GRID --- */
+        .product-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 2rem;
+        }
+        .product-card { cursor: pointer; display: flex; flex-direction: column; }
+        .p-image-wrapper {
+            width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background-color: #f9f9f9;
+            position: relative; margin-bottom: 1rem;
+        }
+        .p-image-wrapper img { transition: transform 0.6s ease; object-fit: contain; padding: 10px; }
+        .product-card:hover .p-image-wrapper img { transform: scale(1.08); }
+        
+        .p-name { font-size: 0.95rem; margin-bottom: 5px; font-weight: 500; }
+        .p-price { color: #555; font-size: 0.9rem; }
+
+        /* --- PRODUCT DETAIL PAGE --- */
+        .page-header { text-align: center; padding: 4rem 0 2rem; }
+        .page-title { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 1rem; }
+        .breadcrumb { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        
+        .product-detail-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding: 4rem 3rem; max-width: 1440px; margin: 0 auto;
+        }
+        
+        .pd-gallery { display: flex; flex-direction: column; gap: 1rem; }
+        .pd-image-main { 
+            aspect-ratio: 1/1; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .pd-image-main img { object-fit: contain; max-height: 500px; width: 100%; }
+        
+        .pd-thumbnails { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .thumb { 
+            width: 80px; height: 80px; border: 1px solid #ddd; cursor: pointer; opacity: 0.6; transition: 0.3s; 
+            padding: 5px; background: white;
+        }
+        .thumb:hover, .thumb.active { opacity: 1; border-color: var(--primary-black); }
+        .thumb img { width: 100%; height: 100%; object-fit: contain; }
+
+        .pd-info { padding-top: 2rem; }
+        .pd-title { font-family: var(--font-heading); font-size: 3rem; line-height: 1.1; margin-bottom: 1rem; }
+        .pd-price { font-size: 1.5rem; color: #444; margin-bottom: 2rem; font-weight: 400; }
+        .pd-desc { color: #666; margin-bottom: 2rem; line-height: 1.8; font-size: 0.95rem; }
+        
+        /* SELECTORS */
+        .option-group { margin-bottom: 2rem; }
+        .option-label { display: block; font-size: 0.8rem; text-transform: uppercase; font-weight: 600; margin-bottom: 10px; }
+        .option-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        
+        /* Size Buttons */
+        .size-btn {
+            width: 40px; height: 40px; border: 1px solid #ddd; background: white;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;
+            font-size: 0.8rem;
+        }
+        .size-btn:hover, .size-btn.selected { border-color: black; background: black; color: white; }
+
+        /* Color Buttons */
+        .color-btn {
+            padding: 10px 20px; border: 1px solid #ddd; background: white; cursor: pointer; font-size: 0.8rem; transition: 0.3s;
+        }
+        .color-btn:hover, .color-btn.selected { border-color: black; background: #f0f0f0; }
+
+        .add-btn {
+            width: 100%; background: var(--primary-black); color: white; padding: 20px;
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 600; font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .add-btn:hover { background: #333; }
+
+        /* --- CART DRAWER --- */
+        .cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1999;
+            opacity: 0; visibility: hidden; transition: all 0.3s;
+        }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        .cart-drawer {
+            position: fixed; top: 0; right: -450px; width: 450px; height: 100vh;
+            background: white; z-index: 2000;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; flex-direction: column;
+        }
+        .cart-drawer.active { right: 0; }
+        .drawer-header { padding: 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .drawer-body { flex: 1; overflow-y: auto; padding: 2rem; }
+        .cart-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 1.5rem; }
+        .cart-item-img { width: 70px; height: 90px; object-fit: cover; }
+        .drawer-footer { padding: 2rem; background: #fafafa; border-top: 1px solid var(--border-color); }
+        
+        .checkout-btn { width: 100%; background: var(--whatsapp-green); color: white; padding: 18px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .checkout-btn:hover { background: #1ebc57; }
+
+        /* --- FOOTER STYLES --- */
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 4rem 2rem 2rem;
+            margin-top: auto;
+        }
+        .footer-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+        }
+        .footer-col h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .footer-col h4 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .footer-col p {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .footer-col a {
+            display: block;
+            color: #999;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .footer-col a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        .footer-bottom {
+            border-top: 1px solid #333;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) {
+            .nav-left, .nav-right a { display: none; }
+            .container { padding: 0 1.5rem; }
+            .cart-drawer { width: 100%; right: -100%; }
+            .cart-drawer.active { right: 0; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .product-detail-container { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 1.5rem; }
+            
+            /* Footer Mobile */
+            .footer-content { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+            .footer-col h3, .footer-col h4 { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="nav-left">
+                <a onclick="navigateTo('home')" class="nav-link">Home</a>
+                <a onclick="loadCategoryPage('Bags')" class="nav-link">Bags</a>
+                <a onclick="loadCategoryPage('Shoes')" class="nav-link">Shoes</a>
+            </div>
+            <div class="logo" onclick="navigateTo('home')">Glamour Girl</div>
+            <div class="nav-right">
+                <button class="cart-icon" onclick="toggleDrawer(true)">
+                    Bag (<span id="cartCount">0</span>)
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div id="view-home" class="view-section active">
+        <section class="hero">
+            <img id="heroImage" src="" alt="Hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Timeless Style</h1>
+                <p class="hero-subtitle">Handcrafted Leather & Everyday Comfort</p>
+                <button class="btn-primary" onclick="loadCategoryPage('Bags')">Shop Collection</button>
+            </div>
+        </section>
+
+        <section class="categories">
+            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 3rem;">Shop Categories</h2>
+            <div class="cat-container">
+                <div class="cat-item" onclick="loadCategoryPage('Bags')">
+                    <div class="cat-circle"><img src="assets/Screenshot%202026-01-02%20141504.png"></div>
+                    <span class="cat-label">Handbags</span>
+                </div>
+                <div class="cat-item" onclick="loadCategoryPage('Shoes')">
+                    <div class="cat-circle"><img src="assets/Screenshot%202026-01-03%20123719.png"></div> 
+                    <span class="cat-label">Footwear</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="container" style="padding-bottom: 6rem;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2rem;">
+                <h2 style="font-family: var(--font-heading); font-size: 2.2rem;">New Arrivals</h2>
+            </div>
+            <div class="product-grid" id="homeProductGrid">
+                </div>
+        </div>
+    </div>
+
+    <div id="view-category" class="view-section">
+        <div class="page-header">
+            <div class="breadcrumb" onclick="navigateTo('home')">← Back to Home</div>
+            <h1 class="page-title" id="catPageTitle">Category Name</h1>
+            <p style="color: #666;">Explore our curated selection.</p>
+        </div>
+        <div class="container" style="padding-bottom: 6rem;">
+            <div class="product-grid" id="catPageGrid">
+                </div>
+        </div>
+    </div>
+
+    <div id="view-product" class="view-section">
+        <div class="container" style="padding-top: 2rem;">
+            <div class="breadcrumb" onclick="goBackToCategory()">← Back to Collection</div>
+        </div>
+        <div class="product-detail-container">
+            <div class="pd-gallery">
+                <div class="pd-image-main">
+                    <img id="pdImage" src="" alt="">
+                </div>
+                <div class="pd-thumbnails" id="pdThumbnails">
+                    </div>
+            </div>
+            <div class="pd-info">
+                <h1 class="pd-title" id="pdTitle">Product Name</h1>
+                <div class="pd-price" id="pdPrice">R0.00</div>
+                <p class="pd-desc">
+                    Elevate your everyday style with this premium accessory. 
+                    Designed for the modern woman who values elegance and utility.
+                </p>
+                
+                <div id="colorSelectorContainer" class="option-group" style="display:none;">
+                    <span class="option-label">Select Color</span>
+                    <div class="option-row" id="colorOptions">
+                        </div>
+                </div>
+
+                <div id="sizeSelectorContainer" class="option-group" style="display:none;">
+                    <span class="option-label">Select UK Size</span>
+                    <div class="option-row">
+                        <div class="size-btn" onclick="selectSize(this)">3</div>
+                        <div class="size-btn" onclick="selectSize(this)">4</div>
+                        <div class="size-btn" onclick="selectSize(this)">5</div>
+                        <div class="size-btn" onclick="selectSize(this)">6</div>
+                        <div class="size-btn" onclick="selectSize(this)">7</div>
+                    </div>
+                </div>
+
+                <button class="add-btn" id="pdAddBtn">Add to Bag</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleDrawer(false)"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="drawer-header">
+            <h3>Shopping Bag</h3>
+            <button onclick="toggleDrawer(false)" style="font-size:1.5rem;">×</button>
+        </div>
+        <div class="drawer-body" id="cartItems">
+            <p style="text-align:center; color:#888; margin-top:50px;">Your bag is currently empty.</p>
+        </div>
+        <div class="drawer-footer">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem; font-weight:600;">
+                <span>Subtotal</span>
+                <span id="cartTotal">R0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="checkoutViaWhatsApp()">Purchase via WhatsApp</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>Glamour Girl</h3>
+                <p>Curated luxury, everyday comfort. Handpicked accessories for the modern woman.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a onclick="loadCategoryPage('Bags')">Handbags</a>
+                <a onclick="loadCategoryPage('Shoes')">Footwear</a>
+                <a onclick="navigateTo('home')">New Arrivals</a>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Care</h4>
+                <a href="#">Shipping Policy</a>
+                <a href="#">Returns & Exchanges</a>
+                <a href="#">Size Guide</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p>We are available on WhatsApp for orders and inquiries.</p>
+                <p style="color:white; font-weight:500;">+27 76 813 8183</p>
+                <a href="https://wa.me/27768138183" target="_blank" style="color:var(--whatsapp-green); font-weight:600; margin-top:10px; display:inline-block;">Chat on WhatsApp →</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Glamour Girl. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        const API_KEY = "lTheU6rfUhtlOvU4M21iy86sij34Nrh2iGwhDWxPhgJTIsjiFPy42ZdO";
+        let cart = [];
+        let currentCategory = 'home';
+        let selectedSize = null;
+        let selectedColor = null;
+        let currentProduct = null; 
+
+        // --- PRODUCT DATA ---
+        // Bags (Handbags) - Using .png as per your VS Code structure
+        const bags = [
+            { id: 1, name: "Blackcherry Lila Twin Shoulder Bag", price: 275, images: ["assets/Screenshot%202026-01-02%20132457.png"] },
+            { id: 2, name: "Blackcherry Verde Colour Block", price: 240, images: ["assets/Screenshot%202026-01-02%20132526.png", "assets/Screenshot%202026-01-02%20132557.png"] },
+            { id: 3, name: "Blackcherry Sienna Zip Hobo", price: 260, images: ["assets/Screenshot%202026-01-02%20133116.png", "assets/Screenshot%202026-01-02%20133127.png", "assets/Screenshot%202026-01-02%20133137.png"] },
+            { id: 4, name: "Blackcherry Nova Cutout", price: 260, images: ["assets/Screenshot%202026-01-02%20133157.png", "assets/Screenshot%202026-01-02%20133207.png"] },
+            { id: 5, name: "Danbaoly Luxe Top Handle", price: 350, images: ["assets/Screenshot%202026-01-02%20141214.png", "assets/Screenshot%202026-01-02%20141235.png"] },
+            { id: 6, name: "Retro Leopard Shoulder Bag", price: 245, images: ["assets/Screenshot%202026-01-02%20141342.png", "assets/Screenshot%202026-01-02%20141323.png", "assets/Screenshot%202026-01-02%20141307.png"] },
+            { id: 7, name: "Leopard Print Tote Set", price: 299, images: ["assets/Screenshot%202026-01-02%20141504.png", "assets/Screenshot%202026-01-02%20141518.png", "assets/Screenshot%202026-01-02%20141531.png"] },
+            { id: 8, name: "Luxe Quilted Mini Handbag", price: 199, images: ["assets/Screenshot%202026-01-02%20145601.png", "assets/Screenshot%202026-01-02%20145612.png", "assets/Screenshot%202026-01-02%20145623.png"] },
+            { id: 9, name: "Soft Corduroy Tote - Brown", price: 189, images: ["assets/Screenshot%202026-01-02%20145448.png", "assets/Screenshot%202026-01-02%20145510.png", "assets/Screenshot%202026-01-02%20145526.png"] },
+            { id: 10, name: "Elegant Chain Strap Tote", price: 249, images: ["assets/Screenshot%202026-01-02%20145705.png", "assets/Screenshot%202026-01-02%20145717.png", "assets/Screenshot%202026-01-02%20145726.png"] },
+            { id: 11, name: "Chunky Chain Bucket Bag", price: 375, images: ["assets/Screenshot%202026-01-02%20150752.png", "assets/Screenshot%202026-01-02%20150743.png", "assets/Screenshot%202026-01-02%20150805.png"] },
+            { id: 12, name: "Summer Woven Straw Tote", price: 395, images: ["assets/Screenshot%202026-01-02%20150824.png", "assets/Screenshot%202026-01-02%20150832.png", "assets/Screenshot%202026-01-02%20150842.png"] },
+            { id: 14, name: "Glossy Cherry Charm Bag", price: 349, images: ["assets/Screenshot%202026-01-02%20151239.png", "assets/Screenshot%202026-01-02%20151300.png", "assets/Screenshot%202026-01-02%20151246.png"] },
+            { id: 15, name: "Butterfly Print Canvas Bag", price: 199, images: ["assets/Screenshot%202026-01-02%20151336.png", "assets/Screenshot%202026-01-02%20151320.png", "assets/Screenshot%202026-01-02%20151328.png"] },
+            { id: 16, name: "Minimalist Bow Shoulder Bag", price: 179, images: ["assets/Screenshot%202026-01-02%20151400.png", "assets/Screenshot%202026-01-02%20151411.png", "assets/Screenshot%202026-01-02%20151427.png"] }
+        ];
+
+        // Shoes (New Category) - PRESERVED EXACTLY AS REQUESTED (with assets path added)
+        const shoes = [
+            {
+                id: 101,
+                name: "Signature Everyday Flat",
+                price: 249,
+                type: 'shoe',
+                colors: ["Beige", "Sepia", "B & W"],
+                // Exact Screenshot filenames provided by user
+                // Used .png extension as per user system preference
+                images: [
+                    "assets/Screenshot%202026-01-03%20123719.png", // Beige
+                    "assets/Screenshot%202026-01-03%20123835.png", // Sepia
+                    "assets/Screenshot%202026-01-03%20123918.png"  // B&W
+                ]
+            },
+            {
+                id: 102,
+                name: "Crystal Floral Thong Sandals",
+                price: 299,
+                type: 'shoe',
+                colors: ["Black", "Silver", "Green", "Blue"],
+                // Exact filenames from user upload
+                images: [
+                    "assets/Screenshot 2026-01-03 125643.png", // Black
+                    "assets/Screenshot 2026-01-03 125729.png", // Silver
+                    "assets/Screenshot 2026-01-03 125749.png", // Green
+                    "assets/Screenshot 2026-01-03 125805.png"  // Blue
+                ]
+            },
+            {
+                id: 103,
+                name: "Colour Block Wedge Sandal",
+                price: 249,
+                type: 'shoe',
+                colors: ["Black", "Red"],
+                // Exact filenames from user upload
+                images: [
+                    "assets/Screenshot 2026-01-03 131029.png", // Black
+                    "assets/Screenshot 2026-01-03 131116.png"  // Red
+                ]
+            },
+            {
+                id: 104,
+                name: "Chunky Platform Sport Sandals",
+                price: 280,
+                type: 'shoe',
+                colors: ["Pink", "Golden"],
+                // Exact filenames from user upload
+                images: [
+                    "assets/Screenshot 2026-01-03 131429.png", // Pink
+                    "assets/Screenshot 2026-01-03 131503.png"  // Golden
+                ]
+            },
+            {
+                id: 105,
+                name: "Breathable Knit Comfort Sneaker",
+                price: 249,
+                type: 'shoe',
+                // Black, Blue, Red, Grey (Khaki button omitted as image is missing)
+                colors: ["Black", "Blue", "Red", "Grey"],
+                // Exact filenames from user upload
+                images: [
+                    "assets/Screenshot 2026-01-03 131739.png", // Black
+                    "assets/Screenshot 2026-01-03 131836.png", // Blue
+                    "assets/Screenshot 2026-01-03 131853.png", // Red
+                    "assets/Screenshot 2026-01-03 131915.png"  // Grey
+                ]
+            },
+            {
+                id: 106,
+                name: "Casual Platform Elastic Sandal",
+                price: 249,
+                type: 'shoe',
+                // Black, Khaki
+                colors: ["Black", "Khaki"],
+                // Exact filenames from user upload
+                images: [
+                    "assets/Screenshot 2026-01-03 132151.png", // Black
+                    "assets/Screenshot 2026-01-03 132215.png"  // Khaki
+                ]
+            },
+            {
+                id: 107,
+                name: "Comfort Wedge Thong Sandals",
+                price: 349,
+                type: 'shoe',
+                // Black, Navy Blue, Sky Blue, Khaki, Brown
+                colors: ["Black", "Navy Blue", "Sky Blue", "Khaki", "Brown"],
+                // Exact filenames
+                images: [
+                    "assets/Screenshot 2026-01-03 132445.png", // Black
+                    "assets/Screenshot 2026-01-03 132520.png", // Navy
+                    "assets/Screenshot 2026-01-03 132540.png", // Sky Blue
+                    "assets/Screenshot 2026-01-03 132559.png", // Khaki
+                    "assets/Screenshot 2026-01-03 132617.png"  // Brown
+                ]
+            },
+            {
+                id: 108,
+                name: "Sporty Strap Platform Sandals",
+                price: 349,
+                type: 'shoe',
+                colors: ["Black", "Blue", "Red", "Pink"],
+                // Exact filenames from user upload
+                images: [
+                    "assets/Screenshot 2026-01-03 132711.png", // Black
+                    "assets/Screenshot 2026-01-03 132813.png", // Blue
+                    "assets/Screenshot 2026-01-03 132830.png", // Red
+                    "assets/Screenshot 2026-01-03 132852.png"  // Pink
+                ]
+            },
+            {
+                id: 109,
+                name: "Bohemian Pattern Thong Sandal",
+                price: 249,
+                type: 'shoe',
+                colors: ["Multi-colour", "Light Purple"],
+                // Exact filenames from user upload
+                images: [
+                    "assets/Screenshot 2026-01-03 133013.png", // Multi
+                    "assets/Screenshot 2026-01-03 133113.png"  // Purple
+                ]
+            }
+        ];
+
+        // --- NAVIGATION ROUTER ---
+        function navigateTo(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function goBackToCategory() {
+            if(currentCategory === 'home') navigateTo('home');
+            else {
+                navigateTo('category');
+                loadCategoryPage(currentCategory);
+            }
+        }
+
+        // --- DATA LOADERS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initHome();
+        });
+
+        async function initHome() {
+            fetchPexels('fashion editorial model', 1, 'landscape').then(photos => {
+                if(photos.length) document.getElementById('heroImage').src = photos[0].src.original;
+            });
+
+            // Home Page: Mix Shoes (First) + Last 7 Bags
+            const recentBags = bags.slice(-7).reverse(); 
+            const mix = [...shoes, ...recentBags]; 
+            
+            renderGrid(mix, 'homeProductGrid');
+        }
+
+        function loadCategoryPage(category) {
+            currentCategory = category;
+            document.getElementById('catPageTitle').innerText = category;
+            
+            navigateTo('category');
+            
+            let items = [];
+            if (category === 'Bags') items = bags;
+            else if (category === 'Shoes') items = shoes;
+            
+            renderGrid(items, 'catPageGrid');
+        }
+
+        function renderGrid(items, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => openProductPage(item);
+                card.innerHTML = `
+                    <div class="p-image-wrapper"><img src="${item.images[0]}"></div>
+                    <div class="p-name">${item.name}</div>
+                    <div class="p-price">R${item.price}.00</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- PRODUCT PAGE ---
+        function openProductPage(item) {
+            currentProduct = item;
+            selectedSize = null;
+            selectedColor = null;
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            
+            document.getElementById('pdTitle').innerText = item.name;
+            document.getElementById('pdPrice').innerText = `R${item.price}.00`;
+            document.getElementById('pdImage').src = item.images[0];
+            
+            const thumbs = document.getElementById('pdThumbnails');
+            thumbs.innerHTML = '';
+            
+            if(item.images.length > 1) {
+                item.images.forEach(img => {
+                    const t = document.createElement('div');
+                    t.className = 'thumb';
+                    t.innerHTML = `<img src="${img}">`;
+                    t.onclick = () => document.getElementById('pdImage').src = img;
+                    thumbs.appendChild(t);
+                });
+            }
+
+            const colorDiv = document.getElementById('colorSelectorContainer');
+            const colorOptions = document.getElementById('colorOptions');
+            colorOptions.innerHTML = ''; 
+
+            if (item.type === 'shoe' && item.colors) {
+                colorDiv.style.display = 'block';
+                
+                item.colors.forEach((col, idx) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'color-btn';
+                    btn.innerText = col;
+                    btn.onclick = function() { selectColor(this, idx); };
+                    colorOptions.appendChild(btn);
+                });
+
+                // Auto-select first color
+                selectColor(colorOptions.children[0], 0);
+
+            } else {
+                colorDiv.style.display = 'none';
+            }
+
+            const sizeDiv = document.getElementById('sizeSelectorContainer');
+            if (item.type === 'shoe') {
+                sizeDiv.style.display = 'block';
+            } else {
+                sizeDiv.style.display = 'none';
+            }
+
+            const btn = document.getElementById('pdAddBtn');
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            
+            newBtn.onclick = () => {
+                if (item.type === 'shoe') {
+                    if(!selectedSize) { alert("Please select a size."); return; }
+                    if(!selectedColor) { alert("Please select a color."); return; }
+                }
+                
+                const finalName = item.type === 'shoe' ? `${item.name} (${selectedColor}, Size ${selectedSize})` : item.name;
+                const currentImg = document.getElementById('pdImage').src;
+                addToCart(finalName, item.price, currentImg);
+                
+                newBtn.innerText = "Added!";
+                setTimeout(() => newBtn.innerText = "Add to Bag", 1000);
+            };
+
+            navigateTo('product');
+        }
+
+        function selectSize(btn) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedSize = btn.innerText;
+        }
+
+        function selectColor(btn, imageIndex) {
+            if(!currentProduct) return;
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedColor = btn.innerText;
+            
+            if(currentProduct.images[imageIndex]) {
+                document.getElementById('pdImage').src = currentProduct.images[imageIndex];
+            }
+        }
+
+        // --- PEXELS ---
+        async function fetchPexels(query, count, orientation) {
+            try {
+                const res = await fetch(`https://api.pexels.com/v1/search?query=${query}&per_page=${count}&orientation=${orientation}`, {
+                    headers: { Authorization: API_KEY }
+                });
+                const data = await res.json();
+                return data.photos || [];
+            } catch(e) { console.error(e); return []; }
+        }
+
+        // --- CART ---
+        function toggleDrawer(open) {
+            const d = document.getElementById('cartDrawer');
+            const o = document.getElementById('cartOverlay');
+            if(open) { d.classList.add('active'); o.classList.add('active'); }
+            else { d.classList.remove('active'); o.classList.remove('active'); }
+        }
+
+        function addToCart(name, price, img) {
+            cart.push({ name, price, img, id: Date.now() });
+            updateCart();
+            toggleDrawer(true);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCart();
+        }
+
+        function updateCart() {
+            document.getElementById('cartCount').innerText = cart.length;
+            const container = document.getElementById('cartItems');
+            const totalEl = document.getElementById('cartTotal');
+            
+            if(!cart.length) {
+                container.innerHTML = '<p style="text-align:center; color:#888; margin-top:50px;">Your bag is currently empty.</p>';
+                totalEl.innerText = "R0.00";
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.img}" class="cart-item-img">
+                        <div style="flex:1;">
+                            <h4 style="font-size:0.9rem; margin-bottom:5px;">${item.name}</h4>
+                            <div style="color:#666; font-size:0.85rem;">R${item.price}.00</div>
+                            <span onclick="removeFromCart(${item.id})" style="font-size:0.7rem; text-decoration:underline; color:#999; cursor:pointer;">Remove</span>
+                        </div>
+                    </div>`;
+            });
+            totalEl.innerText = "R" + total.toFixed(2);
+        }
+
+        // --- WHATSAPP CHECKOUT FUNCTION ---
+        function checkoutViaWhatsApp() {
+            if (cart.length === 0) {
+                alert("Your bag is empty! Please add items before purchasing.");
+                return;
+            }
+
+            let message = "Hello Glamour Girl, I would like to place an order:\n\n";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.name} - R${item.price}\n`;
+                total += item.price;
+            });
+
+            message += `\nTotal: R${total.toFixed(2)}`;
+            
+            // Redirect to WhatsApp
+            const phoneNumber = "27768138183";
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
